@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bundle of Authorities (BOA) Autobot</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen flex flex-col">
+
+  <!-- Navigation / Header -->
+  <header class="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 bg-amber-600 rounded-lg flex items-center justify-center font-serif text-white font-bold text-xl shadow-inner">
+          §
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            Bundle of Authorities Autobot
+            <span class="text-xs bg-amber-500/20 text-amber-300 font-mono px-2 py-0.5 rounded border border-amber-500/30">AGPL-3.0</span>
+          </h1>
+          <p class="text-xs text-slate-400">Deterministic Footnote Extraction • Zero-Hallucination Verbatim Triage • Native Word .docx</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3 text-xs">
+        <a href="/trailer" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 transition-all shadow-sm">
+          <span>🎬</span> Launch Trailer
+        </a>
+        <span id="localModelBadge" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
+          <span class="w-1.5 h-1.5 mr-1.5 bg-slate-400 rounded-full"></span> Local LLM Port: 11434
+        </span>
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 mr-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Port: 2345
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+    <!-- Step 1: Upload & Privacy Settings -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="border-b border-slate-100 bg-slate-50/50 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 text-white text-xs font-bold">1</span>
+          <h2 class="text-base font-semibold text-slate-900">Upload Draft Court Submission (.docx)</h2>
+        </div>
+        <button id="btnLoadExample" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Load Bundled Example Memo (104 Footnotes)
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5">
+        <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-amber-500 rounded-xl p-8 text-center bg-slate-50/50 cursor-pointer transition-all">
+          <input type="file" id="fileInput" accept=".docx" class="hidden">
+          <div class="flex flex-col items-center justify-center space-y-3">
+            <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-slate-700">Click to upload your draft <span class="font-mono text-xs bg-slate-200 px-1 py-0.5 rounded text-slate-800">.docx</span>, or drag & drop here</p>
+              <p class="text-xs text-slate-500 mt-1">Supports complete footnotes with automatic cross-reference resolution ((n X), ibid, short-forms)</p>
+            </div>
+            <span id="selectedFileName" class="text-xs font-mono text-emerald-600 font-medium hidden"></span>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <button id="btnProcessDoc" class="bg-slate-900 hover:bg-slate-800 text-white font-medium text-sm py-2 px-5 rounded-lg shadow-sm transition-colors flex items-center gap-2 disabled:opacity-50" disabled>
+            <span>Process & Extract Footnotes</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section (Initially Hidden) -->
+    <div id="resultsContainer" class="space-y-8 hidden">
+
+      <!-- Metrics Bar -->
+      <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+          <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">
+            #
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-medium">Total Footnotes Found</p>
+            <p id="statTotalFootnotes" class="text-2xl font-bold text-slate-900">0</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+          <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg">
+            ✕
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-medium">Factual Exhibits / Records Filtered</p>
+            <p id="statFilteredEvidence" class="text-2xl font-bold text-slate-900">0</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center space-x-4">
+          <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
+            ✓
+          </div>
+          <div>
+            <p class="text-xs text-slate-500 font-medium">Unique Legal Authorities</p>
+            <p id="statUniqueAuthorities" class="text-2xl font-bold text-slate-900">0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: Dispute Metadata Form -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="border-b border-slate-100 bg-slate-50/50 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 text-white text-xs font-bold">2</span>
+            <h2 class="text-base font-semibold text-slate-900">Dispute & Cover Page Metadata</h2>
+          </div>
+          <span class="text-xs text-slate-500">Matches Court Cover Page & Solicitors Table</span>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Court Name Header</label>
+            <input type="text" id="metaCourt" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Case / Originating Application / Summons No.</label>
+            <textarea id="metaCaseNo" rows="2" placeholder="One number per line, e.g. HC/OA 123/2026 and HC/SUM 456/2026" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900"></textarea>
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">In the matter of (Statute / Matter Description)</label>
+            <input type="text" id="metaMatter" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Claimant / Appellant / Plaintiff Name</label>
+            <input type="text" id="metaClaimant" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Claimant UEN / ID (Optional)</label>
+            <input type="text" id="metaClaimantUEN" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Respondent / Defendant Name</label>
+            <input type="text" id="metaRespondent" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Respondent UEN / ID (Optional)</label>
+            <input type="text" id="metaRespondentUEN" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Document Title</label>
+            <input type="text" id="metaDocTitle" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Dated Date</label>
+            <input type="text" id="metaDate" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-slate-900">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Solicitors for Claimant</label>
+            <textarea id="metaClaimantSol" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:ring-2 focus:ring-slate-900"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Solicitors for Respondent</label>
+            <textarea id="metaRespondentSol" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:ring-2 focus:ring-slate-900"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Group Order & Combine Settings -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="border-b border-slate-100 bg-slate-50/50 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 text-white text-xs font-bold">3</span>
+            <h2 class="text-base font-semibold text-slate-900">Group Ordering & Combination Controls</h2>
+          </div>
+          <span class="text-xs text-slate-500">Letter-by-letter deterministic sorting is applied within each group</span>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <p class="text-xs text-slate-600">
+            Reorder groups to change the order they appear in the Index and Tab sections. You can also merge categories (e.g. merge Foreign Statutes into Foreign Cases).
+          </p>
+
+          <div id="groupListContainer" class="space-y-2">
+            <!-- Dynamically populated group order items with Move Up / Move Down -->
+          </div>
+
+          <div class="pt-2 flex items-center space-x-4 text-xs">
+            <label class="flex items-center space-x-2 text-slate-700 font-medium">
+              <input type="checkbox" id="chkMergeForeign" class="rounded border-slate-300 text-slate-900 focus:ring-slate-900">
+              <span>Combine Foreign Cases & Foreign Statutes into "Foreign Authorities"</span>
+            </label>
+            <label class="flex items-center space-x-2 text-slate-700 font-medium">
+              <input type="checkbox" id="chkMergeStatutes" class="rounded border-slate-300 text-slate-900 focus:ring-slate-900">
+              <span>Combine Singapore Statutes & Regulations into "Statutes & Statutory Instruments"</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4: Review Authorities & Verbatim Triage -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="border-b border-slate-100 bg-slate-50/50 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="flex items-center justify-center w-6 h-6 rounded-full bg-slate-900 text-white text-xs font-bold">4</span>
+            <h2 class="text-base font-semibold text-slate-900">Authorities Review & Retrieval Triage</h2>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button id="btnRunRetrieval" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-medium py-1.5 px-3.5 rounded-lg shadow-sm transition-colors flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Check Singapore Judgments on eLitigation</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100 text-slate-700 border-b border-slate-200 font-semibold uppercase tracking-wider">
+                <th class="py-3 px-4 w-12 text-center">Inc</th>
+                <th class="py-3 px-4 w-48">Category</th>
+                <th class="py-3 px-4">Authority Title & Citation</th>
+                <th class="py-3 px-4 w-44">Cited Pinpoint(s)</th>
+                <th class="py-3 px-4 w-52">Check Status</th>
+              </tr>
+            </thead>
+            <tbody id="authoritiesTableBody" class="divide-y divide-slate-200 font-normal">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Step 5: Export Action -->
+      <section class="bg-slate-900 rounded-xl p-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
+        <div>
+          <h3 class="text-base font-bold">Ready to Generate Bundle of Authorities?</h3>
+          <p class="text-xs text-slate-400 mt-1">
+            Builds a native Word <span class="font-mono text-amber-400">.docx</span> matching Singapore practice directions with cover page, index, and yellow pinpoint highlights.
+          </p>
+        </div>
+        <button id="btnGenerateBOA" class="bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm py-2.5 px-6 rounded-lg shadow-md transition-all flex items-center gap-2 whitespace-nowrap">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Download Bundle of Authorities (.docx)</span>
+        </button>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+      Bundle of Authorities Autobot • Licensed under AGPL-3.0 • Designed for Singapore Courts & Tribunals
+    </div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

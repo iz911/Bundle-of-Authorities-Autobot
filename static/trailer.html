@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bundle of Authorities Autobot — Launch Trailer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #030712;
+      color: #f9fafb;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      user-select: none;
+    }
+    .font-cinzel { font-family: 'Cinzel', serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Video Frame Container */
+    #stageContainer {
+      position: relative;
+      background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 100px -20px rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .aspect-16-9 {
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 16 / 9;
+    }
+    .aspect-9-16 {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 9 / 16;
+    }
+
+    /* Scanline overlay */
+    .scanlines {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+
+    /* Vignette */
+    .vignette {
+      background: radial-gradient(circle, transparent 60%, rgba(3, 7, 18, 0.85) 100%);
+      pointer-events: none;
+    }
+
+    /* Screen shake */
+    @keyframes shake {
+      0%, 100% { transform: translate(0, 0); }
+      10%, 30%, 50%, 70%, 90% { transform: translate(-4px, 3px); }
+      20%, 40%, 60%, 80% { transform: translate(4px, -3px); }
+    }
+    .shake-active {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    /* Shimmer effect */
+    .shimmer-text {
+      background: linear-gradient(90deg, #f59e0b 0%, #fef3c7 50%, #f59e0b 100%);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+
+    /* Progress bar */
+    #timelineBar {
+      transition: width 0.05s linear;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+  <!-- Top Control Bar -->
+  <div class="max-w-4xl w-full mb-4 flex items-center justify-between text-xs text-slate-400 px-2">
+    <div class="flex items-center space-x-3">
+      <a href="/" class="text-slate-300 hover:text-white flex items-center gap-1 font-medium transition-colors">
+        ← Back to App
+      </a>
+      <span class="text-slate-600">•</span>
+      <span class="text-amber-400 font-semibold tracking-wide">CINEMATIC LAUNCH TRAILER (20s)</span>
+    </div>
+    <div class="flex items-center space-x-3">
+      <!-- Aspect ratio switcher -->
+      <button id="btnAspectToggle" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 flex items-center gap-1.5 transition-colors">
+        <span id="aspectLabel">16:9 Landscape</span>
+      </button>
+      <!-- Audio toggle -->
+      <button id="btnAudioToggle" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-700 flex items-center gap-1.5 transition-colors">
+        <span id="audioIcon">🔊</span>
+        <span id="audioLabel">Sound ON</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- The Stage / Video Canvas -->
+  <div id="stageContainer" class="aspect-16-9 rounded-2xl flex items-center justify-center relative select-none">
+    
+    <!-- Background Grid -->
+    <div class="absolute inset-0 opacity-15" style="background-image: linear-gradient(#374151 1px, transparent 1px), linear-gradient(to right, #374151 1px, transparent 1px); background-size: 32px 32px;"></div>
+    
+    <!-- Ambient Glow Orb -->
+    <div id="glowOrb" class="absolute w-96 h-96 bg-amber-600/10 rounded-full blur-3xl transition-all duration-700 pointer-events-none"></div>
+
+    <!-- Scanline & Vignette -->
+    <div class="absolute inset-0 scanlines z-30"></div>
+    <div class="absolute inset-0 vignette z-30"></div>
+
+    <!-- SCENE 1: THE NIGHTMARE (0s - 4.5s) -->
+    <div id="scene1" class="absolute inset-0 flex flex-col items-center justify-center p-8 z-20 text-center opacity-0 transition-opacity duration-500">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-red-950/60 border border-red-800/80 rounded-full text-red-400 text-xs font-mono font-bold tracking-wider mb-6 animate-pulse">
+        <span>⏰</span> 02:14:38 AM • 6 HOURS TO COURT FILING
+      </div>
+      <h2 class="text-3xl md:text-5xl font-black tracking-tight text-white mb-4 leading-tight">
+        100 Footnotes.<br>
+        <span class="text-red-500">Zero Time to Lose.</span>
+      </h2>
+      <p class="text-slate-400 text-sm md:text-base max-w-lg mb-6 leading-relaxed">
+        Messy cross-references <span class="font-mono text-amber-400 bg-amber-950/40 px-1 py-0.5 rounded border border-amber-800/50">(n 7)</span>, factual trial exhibits mixed with cases, and 50 authorities to alphabetize by hand.
+      </p>
+      <div class="text-xs font-mono text-slate-500 tracking-wider uppercase">
+        Still doing unbillable legal drudgery at 2 AM?
+      </div>
+    </div>
+
+    <!-- SCENE 2: THE TITLE DROP (4.5s - 8.5s) -->
+    <div id="scene2" class="absolute inset-0 flex flex-col items-center justify-center p-8 z-20 text-center opacity-0 transition-opacity duration-500">
+      <div class="w-16 h-16 bg-amber-500/20 border border-amber-500/40 rounded-2xl flex items-center justify-center text-amber-400 text-3xl font-serif font-black shadow-lg shadow-amber-500/10 mb-6">
+        §
+      </div>
+      <h1 class="text-4xl md:text-6xl font-black tracking-tight text-white font-cinzel mb-3 shimmer-text">
+        BUNDLE OF AUTHORITIES<br>AUTOBOT
+      </h1>
+      <p class="text-sm md:text-lg text-slate-300 font-semibold tracking-wide mb-3">
+        Hard Deterministic Code • Zero-Hallucination Legal Triage
+      </p>
+      <div class="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-950/40 border border-emerald-800/60 px-3 py-1 rounded-full">
+        <span>✓</span> Eliminating Late-Night Unbillable Legal Work
+      </div>
+    </div>
+
+    <!-- SCENE 3: REAL-TIME PIPELINE (8.5s - 13.5s) -->
+    <div id="scene3" class="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-10 z-20 opacity-0 transition-opacity duration-500">
+      <div class="text-xs font-mono text-amber-400 font-bold uppercase tracking-widest mb-4">
+        ⚡ Deterministic 5-Stage Legal Engine
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-w-2xl w-full text-left">
+        
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-3.5 flex items-center space-x-3 shadow-md">
+          <div class="w-9 h-9 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-sm">1</div>
+          <div>
+            <div class="text-xs font-bold text-white">Footnote & Evidence Filter</div>
+            <div class="text-[11px] text-slate-400">101 footnotes parsed • 41 trial exhibits ignored</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-3.5 flex items-center space-x-3 shadow-md">
+          <div class="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold text-sm">2</div>
+          <div>
+            <div class="text-xs font-bold text-white">Cross-Reference Resolver</div>
+            <div class="text-[11px] text-slate-400">Emirates Trading (n 5) → Full citation resolved</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-3.5 flex items-center space-x-3 shadow-md">
+          <div class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-sm">3</div>
+          <div>
+            <div class="text-xs font-bold text-white">7-Tier Court Taxonomy</div>
+            <div class="text-[11px] text-slate-400">SG Cases, Statutes, Regulations, Foreign Law</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-3.5 flex items-center space-x-3 shadow-md">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-sm">4</div>
+          <div>
+            <div class="text-xs font-bold text-white">Verbatim Judgment Checks</div>
+            <div class="text-[11px] text-slate-400">Cited paragraphs checked on eLitigation • Zero hallucination</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SCENE 4: THE COURT-READY DOCUMENT (13.5s - 17.5s) -->
+    <div id="scene4" class="absolute inset-0 flex flex-col items-center justify-center p-8 z-20 text-center opacity-0 transition-opacity duration-500">
+      <div class="text-xs font-mono text-emerald-400 font-bold uppercase tracking-widest mb-3">
+        📄 Complete Court-Ready .docx Output
+      </div>
+      
+      <!-- Mock Document Preview -->
+      <div class="bg-white text-slate-900 rounded-xl p-5 shadow-2xl max-w-md w-full border border-slate-200 text-left transform -rotate-1 hover:rotate-0 transition-transform">
+        <div class="text-[10px] text-center font-bold text-slate-800 tracking-wider uppercase border-b pb-2 mb-3">
+          IN THE STATE COURTS OF THE REPUBLIC OF SINGAPORE<br>
+          <span class="text-slate-500 font-normal">CLAIMANT'S BUNDLE OF AUTHORITIES</span>
+        </div>
+        <div class="space-y-2 text-[10px]">
+          <div class="flex justify-between font-mono bg-slate-100 p-1.5 rounded text-slate-700">
+            <span class="font-bold">TAB 1</span>
+            <span>Rules of Court 2021, Order 15 rule 10</span>
+          </div>
+          <div class="flex justify-between font-mono bg-slate-100 p-1.5 rounded text-slate-700">
+            <span class="font-bold">TAB 2</span>
+            <span>Low Yung Chyuan v MCST 2178 [2019] SGSTB 3</span>
+          </div>
+          <div class="bg-amber-100/80 border border-amber-300 p-1.5 rounded text-[9.5px] text-amber-900 font-mono">
+            ★ Pinpoints Highlighted in Court-Mandated Yellow
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 flex items-center justify-center gap-2 text-xs font-semibold text-slate-300">
+        <span>✓ Formal Cover Page</span>
+        <span>•</span>
+        <span>✓ 2-Column Index</span>
+        <span>•</span>
+        <span>✓ Yellow Highlighting</span>
+      </div>
+    </div>
+
+    <!-- SCENE 5: OUTRO & CALL TO ACTION (17.5s - 22s) -->
+    <div id="scene5" class="absolute inset-0 flex flex-col items-center justify-center p-8 z-20 text-center opacity-0 transition-opacity duration-500">
+      <div class="max-w-lg mb-6">
+        <blockquote class="text-base md:text-xl font-medium text-slate-200 italic leading-snug mb-3">
+          “The goal of technology is to kill tedious, low-value work — giving lawyers capacity to service client needs.”
+        </blockquote>
+      </div>
+
+      <h3 class="text-2xl md:text-3xl font-black text-white font-cinzel mb-2">
+        BUNDLE OF AUTHORITIES AUTOBOT
+      </h3>
+
+      <div class="flex items-center gap-2 font-mono text-xs text-amber-400 bg-amber-950/40 border border-amber-800/60 px-3 py-1 rounded-full mb-6">
+        <span>AGPL-3.0</span> • <span>Open Source</span> • <span>Your Draft Stays Local</span>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <button id="btnReplay" class="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs py-2 px-5 rounded-lg shadow-lg transition-transform active:scale-95 flex items-center gap-1.5">
+          <span>↺ Replay Trailer</span>
+        </button>
+        <a href="/" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs py-2 px-5 rounded-lg border border-slate-700 transition-colors">
+          Open App
+        </a>
+      </div>
+    </div>
+
+    <!-- Play / Pause Overlay on Click -->
+    <div id="playPromptOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-40 flex flex-col items-center justify-center cursor-pointer">
+      <div class="w-20 h-20 bg-amber-600 hover:bg-amber-500 text-white rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-105 active:scale-95 pl-1 mb-3">
+        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <p class="text-sm font-semibold text-white tracking-wide">Click to Play Cinematic Trailer</p>
+      <p class="text-xs text-slate-400 mt-1">Includes procedural WebAudio soundtrack</p>
+    </div>
+
+    <!-- Bottom Progress Bar -->
+    <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-800/80 z-30">
+      <div id="timelineBar" class="h-full bg-gradient-to-r from-amber-500 to-amber-300 w-0"></div>
+    </div>
+
+  </div>
+
+  <!-- Audio Synthesizer & Trailer Controller JS -->
+  <script>
+    // Procedural Audio Engine using Web Audio API
+    let audioCtx = null;
+    let isMuted = false;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playTone(freq, type, duration, gainVal = 0.15) {
+      if (isMuted || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function playBassDrop() {
+      if (isMuted || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 1.2);
+        gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.4);
+      } catch (e) {}
+    }
+
+    function playClick() {
+      playTone(1800, 'square', 0.04, 0.05);
+    }
+
+    function playRiser() {
+      if (isMuted || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(80, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 2.0);
+        gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.12, audioCtx.currentTime + 1.9);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.1);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 2.1);
+      } catch (e) {}
+    }
+
+    // Timeline Engine
+    const TOTAL_DURATION = 21.0; // 21 seconds
+    let startTime = null;
+    let isPlaying = false;
+    let animationFrameId = null;
+
+    const stageContainer = document.getElementById('stageContainer');
+    const playPromptOverlay = document.getElementById('playPromptOverlay');
+    const timelineBar = document.getElementById('timelineBar');
+    const btnReplay = document.getElementById('btnReplay');
+    const btnAudioToggle = document.getElementById('btnAudioToggle');
+    const audioIcon = document.getElementById('audioIcon');
+    const audioLabel = document.getElementById('audioLabel');
+    const btnAspectToggle = document.getElementById('btnAspectToggle');
+    const aspectLabel = document.getElementById('aspectLabel');
+
+    const scenes = [
+      { id: 'scene1', start: 0.0, end: 4.5 },
+      { id: 'scene2', start: 4.5, end: 8.5 },
+      { id: 'scene3', start: 8.5, end: 13.5 },
+      { id: 'scene4', start: 13.5, end: 17.5 },
+      { id: 'scene5', start: 17.5, end: 21.5 },
+    ];
+
+    let lastSceneIndex = -1;
+
+    function startTrailer() {
+      initAudio();
+      playPromptOverlay.classList.add('hidden');
+      isPlaying = true;
+      startTime = performance.now();
+      lastSceneIndex = -1;
+      playRiser();
+      loop();
+    }
+
+    function loop() {
+      if (!isPlaying) return;
+
+      const elapsed = (performance.now() - startTime) / 1000;
+      const progress = Math.min(elapsed / TOTAL_DURATION, 1.0);
+      timelineBar.style.width = (progress * 100) + '%';
+
+      // Determine active scene
+      let currentSceneIndex = -1;
+      for (let i = 0; i < scenes.length; i++) {
+        if (elapsed >= scenes[i].start && elapsed < scenes[i].end) {
+          currentSceneIndex = i;
+          break;
+        }
+      }
+
+      // Handle scene transitions & SFX
+      if (currentSceneIndex !== lastSceneIndex) {
+        scenes.forEach((s, idx) => {
+          const el = document.getElementById(s.id);
+          if (idx === currentSceneIndex) {
+            el.classList.remove('opacity-0');
+            el.classList.add('opacity-100');
+          } else {
+            el.classList.remove('opacity-100');
+            el.classList.add('opacity-0');
+          }
+        });
+
+        // Trigger scene-specific audio cues
+        if (currentSceneIndex === 0) {
+          playTone(220, 'sine', 0.8, 0.1);
+        } else if (currentSceneIndex === 1) {
+          // Title drop!
+          stageContainer.classList.add('shake-active');
+          setTimeout(() => stageContainer.classList.remove('shake-active'), 500);
+          playBassDrop();
+        } else if (currentSceneIndex === 2) {
+          playRiser();
+          setTimeout(() => playClick(), 400);
+          setTimeout(() => playClick(), 900);
+          setTimeout(() => playClick(), 1400);
+        } else if (currentSceneIndex === 3) {
+          playBassDrop();
+        } else if (currentSceneIndex === 4) {
+          playTone(440, 'triangle', 1.5, 0.15);
+        }
+
+        lastSceneIndex = currentSceneIndex;
+      }
+
+      if (elapsed < TOTAL_DURATION) {
+        animationFrameId = requestAnimationFrame(loop);
+      } else {
+        isPlaying = false;
+        // Keep scene 5 visible
+      }
+    }
+
+    playPromptOverlay.addEventListener('click', startTrailer);
+    btnReplay.addEventListener('click', () => {
+      cancelAnimationFrame(animationFrameId);
+      startTrailer();
+    });
+
+    // Audio Toggle
+    btnAudioToggle.addEventListener('click', () => {
+      isMuted = !isMuted;
+      audioIcon.textContent = isMuted ? '🔇' : '🔊';
+      audioLabel.textContent = isMuted ? 'Sound OFF' : 'Sound ON';
+    });
+
+    // Aspect Ratio Switcher (16:9 Landscape vs 9:16 Vertical)
+    let isLandscape = true;
+    btnAspectToggle.addEventListener('click', () => {
+      isLandscape = !isLandscape;
+      if (isLandscape) {
+        stageContainer.classList.remove('aspect-9-16');
+        stageContainer.classList.add('aspect-16-9');
+        aspectLabel.textContent = '16:9 Landscape';
+      } else {
+        stageContainer.classList.remove('aspect-16-9');
+        stageContainer.classList.add('aspect-9-16');
+        aspectLabel.textContent = '9:16 Vertical (Reels)';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+venv/
+env/
+
+# Temp folders
+temp_uploads/
+scratch/
+
+# Word temp lock files
+~$*.docx
+~$*.doc
+.DS_Store
+Thumbs.db
+
+# Example confidential documents
+Example docs for BOA/
+Example docs for BOA/*
+
+# Trailer build artefacts
+trailer/composition/snapshots/
+
+# Private porting notes
+PORTING-TO-OPEN-SOURCE.md
